@@ -3,7 +3,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
-const trustedPartyRouter = require('./routes/trusted-party');
+const broadcastRouter = require('./routes/broadcast');
 const indexRouter = require('./routes/index');
 
 const app = express();
@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // endpoints list
-app.use('/trusted-parties', trustedPartyRouter);
+app.use('/broadcast', broadcastRouter);
 app.use('/*', indexRouter);
 
 module.exports = app;
