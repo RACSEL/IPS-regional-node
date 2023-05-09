@@ -1,6 +1,14 @@
 [
   {
-    "url": "http://localhost:8080/fhir",
+    "url": "http://localhost:3000/fhir",
+    "country": "JP",
+    "thumbprint": "",
+    "rawData": "",
+    "signature": "",
+    "validUntil": "2025-05-09T00:00:00.0Z"
+  },
+  {
+    "url": "http://localhost:6000/fhir",
     "country": "JP",
     "thumbprint": "",
     "rawData": "",

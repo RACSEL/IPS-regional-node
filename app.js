@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // endpoints list
-app.use('/broadcast', broadcastRouter);
+app.use('/fhir/DocumentReference', broadcastRouter);
 app.use('/*', indexRouter);
 
 module.exports = app;
