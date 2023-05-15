@@ -2,13 +2,14 @@ const express = require('express');
 const trustedParties = require('../trusted-parties.json')
 const router = express.Router();
 const axios = require('axios');
+const { v4: uuidv4 } = require("uuid");
 
 
-/* GET home page. */
+/* GET */
 router.get('/', async (req, res) => {
     let total = 0;
     let entries = [];
-    let id = null;
+    let links = [];
     for (let party of trustedParties) {
         const url = `${party.url}/DocumentReference`;
         const response = await axios.request(
@@ -25,29 +26,30 @@ router.get('/', async (req, res) => {
                 return err;
             });
 
+        // TODO check that we received all references shown in total, total entries is less or equal than limit continue fetching
+
+
         // Only add to response if response was OK
         if (response.status === 200) {
-            console.log(response);
             total += response.data['total'];
-            entries = entries.concat(response.data['entries']);
+            entries = entries.concat(response.data['entry']);
+            links = links.concat(response.data['link'])
         }
     }
-
     const response = {
-        resourceType: 'DocumentReference',
-        id: id, // TODO see what id use
+        resourceType: 'Bundle',
+        id: uuidv4(),
         meta: {
-            lastUpdated: new Date().toISOString() // TODO see what lastUpdated use and format
+            lastUpdated: new Date().toISOString().replace('Z', '+00:00')
         },
         type: "searchset",
         total: total,
-        link: [], // TODO empty for now, fix pagination
+        link: links,
         entry: entries,
         search: {
-            mode: "match" // TODO check other modes
+            mode: "match"
         }
     };
-    console.log(response);
     res.status(200).send(response);
 });
 
