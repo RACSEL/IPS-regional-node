@@ -10,31 +10,25 @@ router.get('/', async (req, res) => {
     let total = 0;
     let entries = [];
     let links = [];
-    let requests = [];
-
     for (let party of trustedParties) {
-        const url = `${party.url}/DocumentReference`;
-        
-        requests.push(axios.request({
-            url,
-            method: req.method,
-            data: req.body,
-            params: req.query,
-            timeout: 25000
-        }));
+        const url = `${party.url}/List`;
+        console.log(url);
+        const response = await axios.request(
+            {
+                url,
+                method: req.method,
+                data: req.body,
+                params: req.query,
+            },
+        ).then((response) => {
+            return response
+        })
+            .catch((err) => {
+                return err;
+            });
 
-    }
+        // TODO check that we received all references shown in total, total entries is less or equal than limit continue fetching
 
-    let responses = await Promise.allSettled(requests);
-
-    for (let result of responses) {
-
-        if(result.status == "rejected"){
-            console.log(result.reason);
-            continue;
-        }
-
-        let response = result.value;
 
         // Only add to response if response was OK
         // TODO Throw warnings for errors

@@ -4,6 +4,7 @@ const logger = require('morgan');
 const cors = require('cors');
 
 const broadcastRouter = require('./routes/broadcast');
+const broadcastListRouter = require('./routes/broadcast-list');
 const trustedPartiesRouter = require('./routes/trusted-parties');
 const indexRouter = require('./routes/index');
 
@@ -17,6 +18,7 @@ app.use(cookieParser());
 
 // endpoints list
 app.use('/fhir/DocumentReference', broadcastRouter);
+app.use('/fhir/List', broadcastListRouter);
 app.use('/trusted-parties', trustedPartiesRouter);
 app.use('/*', indexRouter);
 
