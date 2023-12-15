@@ -43,7 +43,13 @@ router.get('/', async (req, res) => {
             if(response.data['entry']){
             	entries = entries.concat(response.data['entry']);
             }
-            links = links.concat(response.data['link'])
+            response.data['link'].forEach(e => {
+                if(e["relation"]){
+                    e["relation"] = "related";
+                }
+            });
+            links = links.concat(response.data['link']);
+
         }
     }
     const response = {
@@ -56,9 +62,6 @@ router.get('/', async (req, res) => {
         total: total,
         link: links,
         entry: entries,
-        search: {
-            mode: "match"
-        }
     };
     res.status(200).send(response);
 });
