@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
         // Only add to response if response was OK
         // TODO Throw warnings for errors
         if (response.status === 200) {
-            total += response.data['total'];
+            total += +response.data['total'] ? +response.data['total'] : 0;
             if(response.data['entry']){
             	entries = entries.concat(response.data['entry']);
             }
